@@ -1,0 +1,23 @@
+{
+  "name": "japanese_flashcards_backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emoore36/japanese_flashcards_backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/emoore36/japanese_flashcards_backend/issues"
+  },
+  "homepage": "https://github.com/emoore36/japanese_flashcards_backend#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
