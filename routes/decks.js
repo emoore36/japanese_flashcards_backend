@@ -68,7 +68,7 @@ router.get('/:id', async (req, res) => {
 
     const id = Number(req.params.id);
 
-    if (!id || id <= 0) {
+    if (!id || id <= 0 || !Number.isInteger(id)) {
         dto = new DTO(400, "Please include a valid id.");
     } else {
 
@@ -103,7 +103,7 @@ router.put('/:id', async (req, res) => {
 
     if (!req.body.name) {
         errors = [...errors, "Property 'name' is a required field."];
-    } else if (!req.params.id || Number(req.params.id) <= 0) {
+    } else if (!req.params.id || Number(req.params.id) <= 0 || !Number.isInteger(id)) {
         errors = [...errors, "Valid property 'id' required."];
     }
 
@@ -142,8 +142,10 @@ router.delete('/:id', async (req, res) => {
 
     let dto;
 
+    const id = Number(req.params.id);
+
     // data validation
-    if (!req.params.id || Number(req.params.id) <= 0) {
+    if (!id || id <= 0 || !Number.isInteger(id)) {
         dto = new DTO(400, "'id' must be a valid, positive number");
     } else {
 
