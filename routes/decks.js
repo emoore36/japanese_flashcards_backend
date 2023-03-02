@@ -38,7 +38,8 @@ router.post('/', async (req, res) => {
 
     // pull the request body
     if (!req.body.name) {
-        dto = new DTO(400, '"name" is a required field.');
+        console.log('Data validation errors exist. Returning 400 response.');
+        dto = new DTO(400, '"name" is a required field.', req.body);
     } else {
 
         try {
