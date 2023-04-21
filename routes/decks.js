@@ -1,10 +1,12 @@
 var express = require('express');
-const DeckDataService = require('../data/DeckDataService');
+// const DeckDataService = require('../data/services/DeckDataService');
+const DeckBusinessService = require('../business/DeckBusinessService');
 var router = express.Router();
 var Deck = require('../models/Deck');
 var DTO = require('../models/DTO');
 
-const service = new DeckDataService();
+// const service = new DeckDataService();
+const service = new DeckBusinessService();
 
 router.get('/', async (req, res) => {
 
@@ -14,7 +16,7 @@ router.get('/', async (req, res) => {
 
     try {
 
-        const result = await service.readAll();
+        const result = await service.loggedReadAll();
 
         if (result) {
             dto = new DTO(200, "Decks retrieved successfully.", result);
@@ -22,6 +24,7 @@ router.get('/', async (req, res) => {
             dto = new DTO(404, "Failed to retrieve decks.");
         }
     } catch (err) {
+        console.error(err);
         dto = DTO.default(500);
     }
 
@@ -84,7 +87,6 @@ router.get('/:id', async (req, res) => {
             }
 
         } catch (err) {
-            console.error(err);
             dto = DTO.default(500);
         }
     }
