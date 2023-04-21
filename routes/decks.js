@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 
     try {
 
-        const result = await service.loggedReadAll();
+        const result = await service.readAll();
 
         if (result) {
             dto = new DTO(200, "Decks retrieved successfully.", result);

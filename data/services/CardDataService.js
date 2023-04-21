@@ -3,17 +3,11 @@ const DatabaseError = require("../../errors/DatabaseError");
 const DatabaseConnector = require("../DatabaseConnector");
 const CardEntity = require('../entities/CardEntity');
 
+const { withLogging } = require('../../config/logMethod');
+
 class CardDataService {
 
     #db = DatabaseConnector.getConn();
-
-    #logEntry = (methodName, paramData = 'N/A') => {
-        console.log(`Entering CardDataService ${methodName}() with data:`, paramData);
-    };
-
-    #logExit = (methodName, resultData) => {
-        console.log(`Leaving CardDataService ${methodName}() with result:`, resultData);
-    }
 
     /**
      * Adds a given card to the database.
@@ -21,8 +15,6 @@ class CardDataService {
      * @returns the id of the persisted card
      */
     create = async (card) => {
-
-        this.#logEntry('create', card);
 
         const id = await this.#db.one(
             'INSERT INTO card_table (front_text, back_text, deck_id) VALUES ($1, $2, $3) RETURNING id',
@@ -39,7 +31,6 @@ class CardDataService {
             throw new DatabaseError(err);
         });
 
-        this.#logExit('create', id);
         return id;
 
     };
@@ -50,8 +41,6 @@ class CardDataService {
      * @returns {Card} the card
      */
     readOne = async (id) => {
-
-        this.#logEntry('readOne', id);
 
         const result = await this.#db.one(
             'SELECT * FROM card_table WHERE id = $1',
@@ -68,19 +57,16 @@ class CardDataService {
             throw err;
         });
 
-        this.#logExit('readOne', result);
         return result;
     };
 
     readAllbyDeckId = async (deck_id) => {
 
-        this.#logEntry('readAllByDeckId', deck_id);
 
         const result = await this.#db.any(
             'SELECT * FROM card_table WHERE deck_id = $1',
             [deck_id]
         ).then((result) => {
-            this.#logExit('readAllByDeckId', result);
             return result;
         }).catch((err) => {
 
@@ -92,14 +78,12 @@ class CardDataService {
             throw err;
         });
 
-        this.#logExit('readAllByDeckId', result.length);
         return result;
 
     };
 
     readAll = async () => {
 
-        this.#logEntry('readAll')
 
         const result = await this.#db.any(
             'SELECT * FROM card_table'
@@ -110,7 +94,6 @@ class CardDataService {
             throw err;
         });
 
-        this.#logExit('readAll', result.length);
         return result;
 
     }
@@ -121,8 +104,6 @@ class CardDataService {
      * @returns 
      */
     update = async (card) => {
-
-        this.#logEntry('update', card);
 
         const result = await this.#db.any(
             'UPDATE card_table SET front_text = $1, back_text = $2, deck_id = $3 WHERE id = $4',
@@ -135,13 +116,11 @@ class CardDataService {
             throw err;
         });
 
-        this.#logExit('update', result);
         return result;
 
     }
 
     delete = async (id) => {
-        this.#logEntry('delete', id);
 
         const result = await this.#db.none(
             'DELETE FROM card_table WHERE id = $1',
@@ -153,10 +132,16 @@ class CardDataService {
             throw err;
         });
 
-        this.#logExit('delete', result);
         return result;
 
     };
+
+    create = withLogging(this.create, this.constructor.name);
+    readOne = withLogging(this.readOne, this.constructor.name);
+    readAllByDeckId = withLogging(this.readAllByDeckId, this.constructor.name);
+    readAll = withLogging(this.readAll, this.constructor.name);
+    update = withLogging(this.update, this.constructor.name);
+    delete = withLogging(this.delete, this.constructor.name);
 
 }
 

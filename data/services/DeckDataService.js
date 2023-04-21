@@ -1,6 +1,8 @@
 const DatabaseConnector = require("../DatabaseConnector");
 const DeckEntity = require('../entities/DeckEntity');
 
+const { withLogging } = require('../../config/logMethod');
+
 class DeckDataService {
 
     #db = DatabaseConnector.getConn();
@@ -12,19 +14,15 @@ class DeckDataService {
      */
     create = async (deck) => {
 
-        console.log('Entering DeckDataService create() with deck =', deck);
-
         const id = Number(await this.#db.one(
             'INSERT INTO deck_table (name) VALUES ($1) RETURNING id',
             [deck.name]
         ).then((result) => {
             return result.id;
         }).catch((err) => {
-            console.error(err);
             throw err;
         }));
 
-        console.log('Leaving DeckDataService create() with id =', id);
         return id;
 
     }
@@ -35,8 +33,6 @@ class DeckDataService {
      * @returns the deck.
      */
     readOne = async (id) => {
-
-        console.log('Entering DeckDataService readOne() with id =', id);
 
         const deck = await this.#db.one(
             'SELECT * FROM deck_table WHERE id = $1',
@@ -49,12 +45,10 @@ class DeckDataService {
                 return null;
             }
 
-            console.log(err);
             throw err;
 
         });
 
-        console.log('Leaving DeckDataService readOne() with deck =', deck);
         return deck;
 
     }
@@ -65,17 +59,13 @@ class DeckDataService {
      */
     readAll = async () => {
 
-        console.log('Entering DeckDataService readAll().');
-
         const decks = await this.#db.any('SELECT * FROM deck_table')
             .then((result) => {
                 return result;
             }).catch((err) => {
-                console.log(err);
                 throw err;
             });
 
-        console.log('Leaving DeckDataService readAll() with', decks.length, 'results.');
         return decks;
 
     }
@@ -87,19 +77,15 @@ class DeckDataService {
      */
     update = async (deck) => {
 
-        console.log('Entering DeckDataService update() with deck =', deck);
-
         const result = await this.#db.none(
             'UPDATE deck_table SET name = $1 WHERE id = $2',
             [deck.name, deck.id])
             .then((result) => {
                 return 1;
             }).catch((err) => {
-                console.log(err);
                 throw err;
             });
 
-        console.log('Leaving DeckDataService update() with result =', result);
         return result;
 
     }
@@ -111,18 +97,20 @@ class DeckDataService {
      */
     delete = async (id) => {
 
-        console.log('Entering DeckDataService delete() with id =', id);
-
         return await this.#db.none('DELETE FROM deck_table WHERE id = $1', [id])
             .then((result) => {
-                console.log('Leaving DeckDataService delete() after successful deletion.');
                 return 1; // success
             }).catch((err) => {
-                console.error(err);
                 throw err;
             });
 
     }
+
+    create = withLogging(this.create, this.constructor.name);
+    readOne = withLogging(this.readOne, this.constructor.name);
+    readAll = withLogging(this.readAll, this.constructor.name);
+    update = withLogging(this.update, this.constructor.name);
+    delete = withLogging(this.delete, this.constructor.name);
 
 }
 

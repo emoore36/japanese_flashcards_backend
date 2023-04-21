@@ -11,14 +11,6 @@ class DeckBusinessService {
     #deck_repo = new DeckDataService();
     #card_repo = new CardDataService();
 
-    #logEntry = (methodName, paramData = 'N/A') => {
-        console.log(`Entering DeckBusinessService ${methodName}() with data:`, paramData);
-    };
-
-    #logExit = (methodName, resultData) => {
-        console.log(`Leaving DeckBusinessService ${methodName}() with result:`, resultData);
-    }
-
     /**
      * Creates a deck.
      * @param {Deck} deck 
@@ -26,11 +18,7 @@ class DeckBusinessService {
      */
     create = async (deck) => {
 
-        this.#logEntry('create', deck);
-
         const result = await this.#deck_repo.create(deck);
-
-        this.#logExit('create', result);
 
         return result;
 
@@ -43,8 +31,6 @@ class DeckBusinessService {
      */
     readOne = async (id) => {
 
-        this.#logEntry('readOne', id);
-
         let result;
 
         const deckEntity = await this.#deck_repo.readOne(id);
@@ -52,9 +38,6 @@ class DeckBusinessService {
         const cardEntities = await this.#card_repo.readAllbyDeckId(id);
 
         const cards = cardEntities.map(x => Card.of(x));
-
-
-        this.#logExit('readOne', result);
 
         return result;
 
@@ -95,11 +78,7 @@ class DeckBusinessService {
      */
     update = async (deck) => {
 
-        this.#logEntry('update', deck);
-
         const result = await this.#deck_repo.update(deck);
-
-        this.#logExit('update', result);
 
         return result;
 
@@ -112,18 +91,18 @@ class DeckBusinessService {
      */
     delete = async (id) => {
 
-        this.#logEntry('delete', id);
-
         const result = await this.#deck_repo.delete(id);
-
-        this.#logExit('delete', result);
 
         return result;
 
     };
 
 
-    loggedReadAll = withLogging(this.readAll, this.constructor.name);
+    create = withLogging(this.create, this.constructor.name);
+    readOne = withLogging(this.readOne, this.constructor.name);
+    readAll = withLogging(this.readAll, this.constructor.name);
+    update = withLogging(this.update, this.constructor.name);
+    delete = withLogging(this.delete, this.constructor.name);
 
 }
 
