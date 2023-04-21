@@ -1,11 +1,9 @@
 var express = require('express');
-// const DeckDataService = require('../data/services/DeckDataService');
 const DeckBusinessService = require('../business/DeckBusinessService');
 var router = express.Router();
 var Deck = require('../models/Deck');
 var DTO = require('../models/DTO');
 
-// const service = new DeckDataService();
 const service = new DeckBusinessService();
 
 router.get('/', async (req, res) => {

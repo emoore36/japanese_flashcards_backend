@@ -1,6 +1,5 @@
 const Card = require('../models/Card');
 const Deck = require('../models/Deck');
-const DeckEntity = require('../data/entities/DeckEntity');
 const DeckDataService = require('../data/services/DeckDataService');
 const CardDataService = require('../data/services/CardDataService');
 
@@ -38,6 +37,8 @@ class DeckBusinessService {
         const cardEntities = await this.#card_repo.readAllbyDeckId(id);
 
         const cards = cardEntities.map(x => Card.of(x));
+
+        result = Deck.of({ ...deckEntity, cards: cards });
 
         return result;
 
@@ -96,7 +97,6 @@ class DeckBusinessService {
         return result;
 
     };
-
 
     create = withLogging(this.create, this.constructor.name);
     readOne = withLogging(this.readOne, this.constructor.name);
