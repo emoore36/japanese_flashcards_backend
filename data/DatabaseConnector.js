@@ -1,21 +1,23 @@
 require('dotenv').config();
 const pgp = require('pg-promise')();
-const connString = `${process.env.DB_DRIVER}://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_SCHEMA}`;
-let db = pgp(connString);
+// const connString = `${process.env.DB_DRIVER}://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_SCHEMA}`;
+// let db = pgp(connString);
 
 class DatabaseConnector {
 
-    #driver = process.env.DB_DRIVER;
-    #username = process.env.DB_USERNAME;
-    #password = process.env.DB_PASSWORD;
-    #host = process.env.DB_HOST;
-    #port = process.env.DB_PORT;
-    #schema = process.env.DB_SCHEMA;
+    static #driver = process.env.DB_DRIVER;
+    static #username = process.env.DB_USERNAME;
+    static #password = process.env.DB_PASSWORD;
+    static #host = process.env.DB_HOST;
+    static #port = process.env.DB_PORT;
+    static #schema = process.env.DB_SCHEMA;
 
-    // #db = pgp(`${this.#driver}://${this.#username}:${this.#password}@${this.#host}:${this.#port}/${this.#schema}`);
+    static #connString = `${this.#driver}://${this.#username}:${this.#password}@${this.#host}:${this.#port}/${this.#schema}`;
+
+    static #db = pgp(this.#connString);
 
     static getConn = () => {
-        return db;
+        return this.#db;
     }
 
 }
