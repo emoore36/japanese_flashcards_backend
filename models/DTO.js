@@ -10,13 +10,12 @@ class DTO {
         '404': "Data not found.",
         '405': "Method not allowed.",
         '500': "Something went wrong.",
-
     };
 
     /**
      * An instance of the DTO class.
-     * @param {*} code the HTTP response status code.
-     * @param {*} message the user-friendy response message.
+     * @param {Number} code the HTTP response status code.
+     * @param {String} message the user-friendy response message.
      * @param {*} data any data meant to be sent to the client.
      */
     constructor(code, message, data = null) {
@@ -38,7 +37,6 @@ class DTO {
     static default = (code, data = null) => {
 
         const key = String(code);
-
         const defaultMsg = this.defaultMessages[key];
 
         if (defaultMsg) {
