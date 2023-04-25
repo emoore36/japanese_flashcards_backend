@@ -8,53 +8,57 @@ class CardBusinessService {
 
     #repo = new CardDataService();
 
+    /**
+     * Adds the card to the database
+     * @param {Card} card the card to add
+     * @returns the ID of the created card.
+     */
     create = async (card) => {
-
-        const result = Card.of(await this.#repo.create(CardEntity.of(card)));
-
-        return result;
-
+        return Card.of(await this.#repo.create(CardEntity.of(card)));
     };
 
+    /**
+     * Retrieves one card from the database.
+     * @param {Number} id the card ID 
+     * @returns the card.
+     */
     readOne = async (id) => {
-
-        const result = Card.of(await this.#repo.readOne(id));
-
-        return result;
-
+        return Card.of(await this.#repo.readOne(id));
     };
 
+    /**
+     * Retrieves all cards from a specific deck.
+     * @param {Number} deck_id the deck ID
+     * @returns a list of Card objects.
+     */
     readAllByDeckId = async (deck_id) => {
-
-        const entities = await this.#repo.readAllbyDeckId(deck_id);
-
-        const result = entities.map(x => Card.of(x));
-
-        return result;
-
+        return await this.#repo.readAllbyDeckId(deck_id).map(x => Card.of(x));
     };
 
+    /**
+     * Retrieves all cards from the database.
+     * @returns a list of cards.
+     */
     readAll = async () => {
-
-        const entities = await this.#repo.readAll();
-
-        const result = entities.map(x => Card.of(x));
-
-        return result;
+        return await this.#repo.readAll().map(x => Card.of(x));
     }
 
+    /**
+     * Updates a card in the database 
+     * @param {Card} card the updated card.
+     * @returns the ID of the card.
+     */
     update = async (card) => {
-
-        const result = null;
-
-        return result;
+        return this.#repo.update(card);
     }
 
+    /**
+     * Deletes the card from the database.
+     * @param {Number} id the ID of the card
+     * @returns 1 (success)
+     */
     delete = async (id) => {
-
-        const result = null;
-
-        return result;
+        return this.#repo.delete(id);
     };
 
     create = withLogging(this.create, this.constructor.name);

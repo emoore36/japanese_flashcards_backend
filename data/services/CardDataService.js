@@ -11,7 +11,7 @@ class CardDataService {
 
     /**
      * Adds a given card to the database.
-     * @param {Card} card the card to persist
+     * @param {CardEntity} card the card to persist
      * @returns the id of the persisted card
      */
     create = async (card) => {
@@ -38,7 +38,7 @@ class CardDataService {
     /**
      * Retrieves a card from the database where associated with the given ID.
      * @param {Number} id the card ID 
-     * @returns {Card} the card
+     * @returns {CardEntity} the card
      */
     readOne = async (id) => {
 
@@ -60,8 +60,12 @@ class CardDataService {
         return result;
     };
 
+    /**
+     * Retrieves all cards from the deck of the given ID
+     * @param {Number} deck_id the ID of the deck. 
+     * @returns a list of cards from the deck.
+     */
     readAllbyDeckId = async (deck_id) => {
-
 
         const result = await this.#db.any(
             'SELECT * FROM card_table WHERE deck_id = $1',
@@ -82,6 +86,10 @@ class CardDataService {
 
     };
 
+    /**
+     * Retrieves all cards from the database.
+     * @returns a list of cards
+     */
     readAll = async () => {
 
 
@@ -99,9 +107,9 @@ class CardDataService {
     }
 
     /**
-     * 
+     * Updates a card in the database
      * @param {CardEntity} card the card to update 
-     * @returns 
+     * @returns the card ID
      */
     update = async (card) => {
 
@@ -120,6 +128,11 @@ class CardDataService {
 
     }
 
+    /**
+     * Deletes a card from the database.
+     * @param {Number} id the card ID 
+     * @returns the number of rows affected.
+     */
     delete = async (id) => {
 
         const result = await this.#db.none(
