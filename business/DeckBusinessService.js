@@ -17,9 +17,7 @@ class DeckBusinessService {
      */
     create = async (deck) => {
 
-        const result = await this.#deck_repo.create(deck);
-
-        return result;
+        return await this.#deck_repo.create(deck);
 
     };
 
