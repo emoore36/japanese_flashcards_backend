@@ -4,6 +4,7 @@ const DTO = require('../models/DTO');
 const CardBusinessService = require('../business/CardBusinessService');
 const Card = require('../models/Card');
 const NotFoundError = require('../errors/NotFoundError');
+const CardValidator = require('../models/validators/CardValidator');
 
 const service = new CardBusinessService();
 
@@ -12,27 +13,10 @@ router.post("/", async (req, res) => {
     let dto = DTO.default(405);
 
     // data validation
-    const front_text = req.body.front_text;
-    const back_text = req.body.back_text;
-    const deck_id = Number(req.body.deck_id);
+    const validationResult = CardValidator.validate(req.body);
 
-    // for each validation error, add to the list
-    let validationErrors = [];
-
-    if (!front_text) {
-        validationErrors = [...validationErrors, '[front_text] is a required string and cannot be blank.'];
-    }
-    if (!back_text) {
-        validationErrors = [...validationErrors, '[back_text] is a required string and cannot be blank.'];
-    }
-    if (!deck_id || !Number.isInteger(deck_id) || deck_id <= 0) {
-        validationErrors = [...validationErrors, '[deck_id] is a required, non-zero, positive integer.'];
-    }
-
-    // if list not empty, response will contain list
-    if (validationErrors.length) {
-        // set DTO
-        dto = DTO.default(400, validationErrors);
+    if (validationResult.hasErrors) {
+        dto = DTO.default(400, validationResult.errorsList);
     } else {
         try {
 
@@ -169,30 +153,13 @@ router.put("/:id", async (req, res) => {
     let dto = DTO.default(405);
 
     // data validation
-    const id = Number(req.params.id);
-    const front_text = req.body.front_text;
-    const back_text = req.body.back_text;
-    const deck_id = Number(req.body.deck_id);
+    const validationResult = CardValidator.validate(req.body).includeId(req.params.id);
 
-    let validationErrors = [];
-
-    if (!id || !Number.isInteger(id) || id <= 0) {
-        validationErrors = [...validationErrors, '[deck_id] is a required, non-zero, positive integer.'];
-    }
-    if (!front_text) {
-        validationErrors = [...validationErrors, '[front_text] is a required string and cannot be blank.'];
-    }
-    if (!back_text) {
-        validationErrors = [...validationErrors, '[back_text] is a required string and cannot be blank.'];
-    }
-    if (!deck_id || !Number.isInteger(deck_id) || deck_id <= 0) {
-        validationErrors = [...validationErrors, '[deck_id] is a required, non-zero, positive integer.'];
-    }
-
-    if (validationErrors.length) {
-        dto = DTO.default(400, validationErrors);
+    if (validationResult.hasErrors) {
+        dto = DTO.default(400, validationResult.errorsList);
     } else {
 
+        // attempt to persist
         const result = await service.update(new Card(id, front_text, back_text, deck_id))
             .then((result) => {
                 dto = result ? DTO.default(200, result) : DTO.default(404);
