@@ -3,6 +3,7 @@ const DeckBusinessService = require('../business/DeckBusinessService');
 var router = express.Router();
 var Deck = require('../models/Deck');
 var DTO = require('../models/DTO');
+var DeckValidator = require('../models/validators/DeckValidator');
 
 const service = new DeckBusinessService();
 
@@ -42,10 +43,12 @@ router.post('/', async (req, res) => {
 
     let dto;
 
-    // pull the request body
-    if (!req.body.name) {
+    // data validation
+    const validationResult = DeckValidator.validate(req.body);
+
+    if (validationResult.hasErrors) {
         console.log('Data validation errors exist. Returning 400 response.');
-        dto = new DTO(400, '"name" is a required field.', req.body);
+        dto = DTO.default(400, validationResult.errorsList);
     } else {
 
         try {
@@ -111,18 +114,10 @@ router.put('/:id', async (req, res) => {
     let dto;
 
     // data validation
-    let errors = [];
+    const validationResult = DeckValidator.validate(req.body).includeId(req.params.id);
 
-    // if a validation error fires, add to the list
-    if (!req.body.name) {
-        errors = [...errors, "Property 'name' is a required field."];
-    } else if (!req.params.id || Number(req.params.id) <= 0 || !Number.isInteger(id)) {
-        errors = [...errors, "Valid property 'id' required."];
-    }
-
-    // if list not empty, set DTO with list
-    if (errors.length) {
-        dto = DTO.default(400, errors);
+    if (validationResult.hasErrors) {
+        dto = DTO.default(400, validationResult.errorsList);
     } else {
 
         try {
