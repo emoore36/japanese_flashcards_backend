@@ -43,7 +43,9 @@ class CardBusinessService {
        * @returns a list of cards.
        */
     readAll = async () => {
-        return await this.#repo.readAll().map(x => Card.of(x));
+        const entities = await this.#repo.readAll();
+
+        return entities.map(x => Card.of(x));
     };
 
     /**
