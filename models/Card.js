@@ -1,30 +1,23 @@
 class Card {
-
-    constructor(id, front_text, back_text, deck_id) {
+    constructor(id = 0, frontText = '', backText = '', deckId = 0) {
         this.id = id;
-        this.front_text = front_text;
-        this.back_text = back_text;
-        this.deck_id = deck_id;
+        this.front_text = frontText;
+        this.back_text = backText;
+        this.deck_id = deckId;
     }
 
     static of = (props) => {
-        const id = props.id;
-        const front_text = props.front_text;
-        const back_text = props.back_text;
-        const deck_id = props.deck_id;
+        const id = props.id || 0;
+        const frontText = props.front_text || '';
+        const backText = props.back_text || '';
+        const deckId = props.deck_id || 0;
 
-        if (!front_text || !back_text || !deck_id) {
-            throw new Error("Unable to create Card object from", props);
+        if (!frontText || !backText || !deckId) {
+            throw new Error('Unable to create Card object from', props);
         } else {
-            return new Card(id, front_text, back_text, deck_id);
+            return new Card(id, frontText, backText, deckId);
         }
-
-    }
-
-    toString = () => {
-        return `Card[id=${id},front_text=${front_text},back_text=${back_text},deck_id=${this.deck_id}]`
-    }
-
+    };
 }
 
 module.exports = Card;
