@@ -51,7 +51,7 @@ class CardDataService {
             }
 
             console.log(err);
-            throw err;
+            throw new DatabaseError(err);
         });
 
         return result;
@@ -74,7 +74,7 @@ class CardDataService {
             }
 
             console.log(err);
-            throw err;
+            throw new DatabaseError(err);
         });
 
         return result;
@@ -91,7 +91,7 @@ class CardDataService {
             return result;
         }).catch((err) => {
             console.log(err);
-            throw err;
+            throw new DatabaseError(err);
         });
 
         return result;
@@ -110,7 +110,7 @@ class CardDataService {
             return result.id;
         }).catch((err) => {
             console.log(err);
-            throw err;
+            throw new DatabaseError(err);
         });
 
         return result;
@@ -129,7 +129,7 @@ class CardDataService {
             return 1;
         }).catch((err) => {
             console.log(err);
-            throw err;
+            throw new DatabaseError(err);
         });
 
         return result;

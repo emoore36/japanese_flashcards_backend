@@ -1,6 +1,7 @@
 const DatabaseConnector = require('../DatabaseConnector');
 
 const { withLogging } = require('../../config/logMethod');
+const DatabaseError = require('../../errors/DatabaseError');
 
 class DeckDataService {
     #db;
@@ -21,7 +22,8 @@ class DeckDataService {
         ).then((result) => {
             return result.id;
         }).catch((err) => {
-            throw err;
+            console.log(err);
+            throw new DatabaseError(err);
         }));
 
         return id;
@@ -42,8 +44,8 @@ class DeckDataService {
             if (err.name === 'QueryResultError') {
                 return null;
             }
-
-            throw err;
+            console.log(err);
+            throw new DatabaseError(err);
         });
 
         return deck;
@@ -58,7 +60,8 @@ class DeckDataService {
             .then((result) => {
                 return result;
             }).catch((err) => {
-                throw err;
+                console.log(err);
+                throw new DatabaseError(err);
             });
 
         return decks;
@@ -76,7 +79,8 @@ class DeckDataService {
             .then((result) => {
                 return 1;
             }).catch((err) => {
-                throw err;
+                console.log(err);
+                throw new DatabaseError(err);
             });
 
         return result;
@@ -92,7 +96,8 @@ class DeckDataService {
             .then((result) => {
                 return 1; // success
             }).catch((err) => {
-                throw err;
+                console.log(err);
+                throw new DatabaseError(err);
             });
     };
 
