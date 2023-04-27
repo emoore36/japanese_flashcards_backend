@@ -1,10 +1,7 @@
 require('dotenv').config();
 const pgp = require('pg-promise')();
-// const connString = `${process.env.DB_DRIVER}://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_SCHEMA}`;
-// let db = pgp(connString);
 
 class DatabaseConnector {
-
     static #driver = process.env.DB_DRIVER;
     static #username = process.env.DB_USERNAME;
     static #password = process.env.DB_PASSWORD;
@@ -18,8 +15,7 @@ class DatabaseConnector {
 
     static getConn = () => {
         return this.#db;
-    }
-
+    };
 }
 
 module.exports = DatabaseConnector;
