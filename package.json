@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
-    "test": "mocha ./tests"
+    "test": "mocha ./tests --recursive"
   },
   "dependencies": {
     "chai": "^4.3.7",
@@ -19,5 +19,12 @@
     "nodemon": "^2.0.20",
     "pg-promise": "^11.2.0",
     "sinon": "^15.0.4"
+  },
+  "devDependencies": {
+    "eslint": "^8.39.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^15.7.0",
+    "eslint-plugin-promise": "^6.1.1"
   }
 }
