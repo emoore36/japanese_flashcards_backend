@@ -1,5 +1,4 @@
 class DeckEntity {
-
     constructor(id, name) {
         this.id = id;
         this.name = name;
@@ -10,17 +9,11 @@ class DeckEntity {
         const name = props.name;
 
         if (!name) {
-            throw new Error("Unable to create DeckEntity object from", props);
+            throw new Error('Unable to create DeckEntity object from', props);
         } else {
-            return new Deck(id, name);
+            return new DeckEntity(id, name);
         }
-
-    }
-
-    toString = () => {
-        return `DeckEntity[id=${id},name=${name}]`
-    }
-
+    };
 }
 
 module.exports = DeckEntity;
