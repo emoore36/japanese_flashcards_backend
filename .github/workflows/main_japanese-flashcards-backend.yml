@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'japanese-flashcards-backend'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_3C23FCBB551B48AD8906BA8C64067D23 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C76E33753CA54A3BA7599488C68F6AA9 }}
           package: .
