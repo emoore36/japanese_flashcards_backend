@@ -2,7 +2,7 @@ const CardEntity = require('../data/entities/CardEntity');
 const CardDataService = require('../data/services/CardDataService');
 const Card = require('../models/Card');
 
-const { withLogging } = require('../config/logMethod');
+// const { withLogging } = require('../config/logMethod');
 
 class CardBusinessService {
     #repo;
@@ -35,7 +35,9 @@ class CardBusinessService {
        * @returns a list of Card objects.
        */
     readAllByDeckId = async (deckId) => {
-        return await this.#repo.readAllbyDeckId(deckId).map(x => Card.of(x));
+        const entities = await this.#repo.readAllByDeckId(deckId);
+
+        return await entities.map(x => Card.of(x));
     };
 
     /**
@@ -66,12 +68,12 @@ class CardBusinessService {
         return this.#repo.delete(id);
     };
 
-    create = withLogging(this.create, this.constructor.name);
-    readOne = withLogging(this.readOne, this.constructor.name);
-    readAllByDeckId = withLogging(this.readAllByDeckId, this.constructor.name);
-    readAll = withLogging(this.readAll, this.constructor.name);
-    update = withLogging(this.update, this.constructor.name);
-    delete = withLogging(this.delete, this.constructor.name);
+    // create = withLogging(this.create, this.constructor.name);
+    // readOne = withLogging(this.readOne, this.constructor.name);
+    // readAllByDeckId = withLogging(this.readAllByDeckId, this.constructor.name);
+    // readAll = withLogging(this.readAll, this.constructor.name);
+    // update = withLogging(this.update, this.constructor.name);
+    // delete = withLogging(this.delete, this.constructor.name);
 }
 
 module.exports = CardBusinessService;

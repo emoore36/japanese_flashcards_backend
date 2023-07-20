@@ -74,4 +74,29 @@ describe('CardBusinessService', () => {
             readAllStub.restore();
         });
     });
+
+    describe('readAllByDeckId', () => {
+        it('should return a list of cards', async () => {
+            // parameter data
+            const deckId = 1;
+
+            // return data
+            const expectedCards = [
+                new Card(1, 'front1', 'back1', 1),
+                new Card(2, 'front2', 'back2', 1),
+                new Card(3, 'front3', 'back', 1)
+            ];
+
+            // stub the data method
+            const readAllByDeckIdStub = repo.readAllByDeckId.resolves(expectedCards);
+
+            // make the service call
+            const result = await service.readAllByDeckId(deckId);
+
+            // assert results
+            expect(result).to.deep.equal(expectedCards);
+
+            readAllByDeckIdStub.restore();
+        });
+    });
 });
